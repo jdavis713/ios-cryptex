@@ -12,8 +12,11 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        cryptexPicker.delegate = self
+        cryptexPicker.dataSource = self
+        
+        updateViews()
     }
     
     var letters = ["A", "B", "C", "D",
@@ -75,11 +78,17 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
+    func newCryptexAndReset() {
+        cryptexController.randomCryptex()
+        updateViews()
+        reset()
+    }
+    
     //MARK: - Alerts
     func presentCorrectPasswordAlert() {
         
         let alert = UIAlertController(title: "Correctamundo!", message: "Congrats! You're smart!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Try new cryptex", style: .default, handler: {(alert) in self.newCryptexAndReset()}))
+        alert.addAction(UIAlertAction(title: "Try new cryptex", style: .default, handler: { (alert) in self.newCryptexAndReset()}))
         present(alert, animated: true, completion: nil)
     }
     
@@ -91,21 +100,20 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     func presentNoTimeRemainingAlert() {
         let alert = UIAlertController(title: "No Time", message: "You ran out of time! Would you like to reset the timer?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Reset Timer", style: .default, handler: {(alert) in self.reset()}))
-        alert.addAction(UIAlertAction(title: "Try new cryptex", style: .default, handler: {(alert) in self.newCryptexAndReset()}))
+        alert.addAction(UIAlertAction(title: "Reset Timer", style: .default, handler: { (alert) in self.reset()}))
+        alert.addAction(UIAlertAction(title: "Try new cryptex", style: .default, handler: { (alert) in self.newCryptexAndReset()}))
         present(alert, animated: true, completion: nil)
     }
     
-    func newCryptexAndReset() {
-        cryptexController.randomCryptex()
-        updateViews()
-        reset()
-    }
     
     //MARK: -Actions
 
     @IBAction func unlockButtonPressed(_ sender: Any) {
-        print("Unlock")
+        if hasMatchingPassword() {
+            presentCorrectPasswordAlert()
+        } else {
+            presentIncorrectPasswordAlert()
+        }
     }
     
     
