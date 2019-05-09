@@ -75,6 +75,27 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
+    //MARK: - Alerts
+    func presentCorrectPasswordAlert() {
+        
+        let alert = UIAlertController(title: "Correctamundo!", message: "Congrats! You're smart!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Try new cryptex", style: .default, handler: {(alert) in self.newCryptexAndReset()}))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func presentIncorrectPasswordAlert() {
+        let alert = UIAlertController(title: "Wrong!", message: "If I chose as bad as you, I'd try again.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Continue guessing!", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func presentNoTimeRemainingAlert() {
+        let alert = UIAlertController(title: "No Time", message: "You ran out of time! Would you like to reset the timer?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Reset Timer", style: .default, handler: {(alert) in self.reset()}))
+        alert.addAction(UIAlertAction(title: "Try new cryptex", style: .default, handler: {(alert) in self.newCryptexAndReset()}))
+        present(alert, animated: true, completion: nil)
+    }
+    
     func newCryptexAndReset() {
         cryptexController.randomCryptex()
         updateViews()
@@ -96,6 +117,7 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     @IBOutlet var cryptexPicker: UIPickerView!
     
     var cryptexController = CryptexController()
-    var @objc var countdownTimer: Timer?
+    
+    @objc var countdownTimer: Timer?
 
 }
