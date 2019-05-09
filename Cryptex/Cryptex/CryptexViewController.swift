@@ -49,6 +49,38 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         cryptexPicker.reloadAllComponents()
     }
     
+    //MARK: -Game Logic
+    
+    func hasMatchingPassword() -> Bool {
+        let numberOfLetters = cryptexPicker.numberOfComponents
+        
+        var passwordEntered: [String] = []
+        for letter in 0..<numberOfLetters{
+            let currentComponent = cryptexPicker.selectedRow(inComponent: letter)
+            passwordEntered.append(letters[currentComponent])
+        }
+        
+        let passwordEnteredString = passwordEntered.joined(separator: "").lowercased()
+        if passwordEnteredString == cryptexController.currentCryptex?.password {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func reset() {
+        countdownTimer?.invalidate()
+        _ = Timer.scheduledTimer(withTimeInterval: 60.00, repeats: false) { (countdownTimer) in
+            self.presentNoTimeRemainingAlert()
+        }
+    }
+    
+    func newCryptexAndReset() {
+        cryptexController.randomCryptex()
+        updateViews()
+        reset()
+    }
+    
     //MARK: -Actions
 
     @IBAction func unlockButtonPressed(_ sender: Any) {
@@ -64,6 +96,6 @@ class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     @IBOutlet var cryptexPicker: UIPickerView!
     
     var cryptexController = CryptexController()
-    
+    var @objc var countdownTimer: Timer?
 
 }
