@@ -8,12 +8,45 @@
 
 import UIKit
 
-class CryptexViewController: UIViewController {
-
+class CryptexViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    var letters = ["A", "B", "C", "D",
+                   "E", "F", "G", "H",
+                   "I", "J", "K", "L",
+                   "M", "N", "O", "P",
+                   "Q", "R", "S", "T",
+                   "U", "V", "W", "X",
+                   "Y", "Z"]
+    
+    //MARK: -Data source and Delegate Functions
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        guard let cryptex = cryptexController.currentCryptex else { return 0 }
+        return cryptex.password.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+         return letters.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        // For the title of each row, we want to show the letter that corresponds to the row. i.e. row 0 should show "A", row 1 should show "B", etc.
+        return letters[row]
+    }
+    
+    
+    
+    //MARK: -Update Views
+    
+    func updateViews() {
+        guard let cryptexHint = cryptexController.currentCryptex?.hint else { return }
+        hintLabel.text = cryptexHint
+        cryptexPicker.reloadAllComponents()
     }
     
     //MARK: -Actions
@@ -29,6 +62,8 @@ class CryptexViewController: UIViewController {
     @IBOutlet var hintLabel: UILabel!
     @IBOutlet var unlockButton: UIButton!
     @IBOutlet var cryptexPicker: UIPickerView!
+    
+    var cryptexController = CryptexController()
     
 
 }

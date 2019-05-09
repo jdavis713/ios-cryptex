@@ -9,30 +9,44 @@
 import Foundation
 
 class CryptexController {
-    
+   
     init() {
         randomCryptex()
     }
     
-    func createCryptex(withPassword password: String, withHint hint: String) {
-        let cryptex = Cryptex(password: password, hint: hint)
-        
-        cryptexes.append(cryptex)
-        
-        createCryptex(withPassword: "Panther", withHint: "Guardian spirit animal of Wakanda.")
-        createCryptex(withPassword: "Hillman", withHint: "Huxtable family Alma Mater")
-        createCryptex(withPassword: "Thanos", withHint: "Can take you out with a SNAP.")
-    }
+    private var cryptextes: [Cryptex] = [Cryptex(password: "Panther", hint: "animal guardian of wakanda"), Cryptex(password: "Hillman", hint:"Huxtable family Alma Mater"), Cryptex(password: "Ironman", hint: "What are you trying to solve right now?")]
+    
+    var currentCryptex: Cryptex?
     
     func randomCryptex() {
-        let currentCryptex = cryptexes.randomElement()
-        
+        let randomCryptex = cryptextes.randomElement()
+        currentCryptex = randomCryptex
     }
-   
-    
-    
-    //MARK: -Properties
-    var cryptexes: [Cryptex] = []
-    var currentCryptex = Cryptex?.self
-    
+
 }
+//    init() {
+//        randomCryptex()
+//    }
+    
+//    func createCryptex(withPassword password: String, withHint hint: String) {
+//        let cryptex = Cryptex(password: password, hint: hint)
+//
+//        cryptexes.append(cryptex)
+//
+//        createCryptex(withPassword: "Panther", withHint: "Guardian spirit animal of Wakanda.")
+//        createCryptex(withPassword: "Hillman", withHint: "Huxtable family Alma Mater")
+//        createCryptex(withPassword: "Ironman", withHint: "Defeated Thanos")
+//    }
+//
+//    func randomCryptex() {
+//        guard let currentCryptex = cryptexes.randomElement() else { return }
+//
+//    }
+//
+//
+//
+//    //MARK: -Properties
+//    var cryptexes: [Cryptex] = []
+//    var currentCryptex = Cryptex
+//
+
